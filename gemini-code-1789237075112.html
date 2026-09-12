@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Bhoomi, from Raunak 💌</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #fdf6f0;
+      --card-bg: #fffaf5;
+      --accent-warm: #f6c8b2;
+      --accent-pink: #f28b82;
+      --text-main: #5c4d44;
+      --text-soft: #8a796e;
+      --button-hover: #e87b72;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(180deg, #fdf6f0 0%, #fbebe0 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Floating background items */
+    .bubble {
+      position: fixed;
+      font-size: 22px;
+      pointer-events: none;
+      animation: floatUp 8s infinite linear;
+      opacity: 0.5;
+      z-index: 0;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(105vh) scale(0.8);
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1.1);
+        opacity: 0;
+      }
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    header h1 {
+      font-family: 'Comfortaa', cursive;
+      font-size: 2.2rem;
+      color: #b35948;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: var(--text-soft);
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 10px 25px rgba(184, 150, 137, 0.12);
+      border: 1px solid rgba(246, 200, 178, 0.4);
+      transition: transform 0.2s ease;
+    }
+
+    .card h2 {
+      font-family: 'Comfortaa', cursive;
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+      color: #9c483a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Letter section */
+    .letter p {
+      line-height: 1.85;
+      font-size: 1.05rem;
+      margin-bottom: 16px;
+    }
+
+    .highlight-box {
+      background: #faefe6;
+      border-left: 4px solid var(--accent-pink);
+      padding: 14px 18px;
+      border-radius: 0 12px 12px 0;
+      margin: 18px 0;
+      font-size: 0.98rem;
+      line-height: 1.7;
+      color: #6d5b51;
+    }
+
+    .letter-signature {
+      text-align: right;
+      font-weight: 600;
+      margin-top: 24px;
+      color: #9c483a;
+      font-size: 1.1rem;
+    }
+
+    /* Mini-game Section */
+    .game-box {
+      text-align: center;
+    }
+
+    #game-canvas-container {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      background: #faefe6;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-top: 15px;
+      border: 2px dashed #f6c8b2;
+      touch-action: none;
+    }
+
+    .falling-heart {
+      position: absolute;
+      font-size: 26px;
+      user-select: none;
+      cursor: pointer;
+      animation: fallDown linear forwards;
+    }
+
+    @keyframes fallDown {
+      0% { top: -35px; }
+      100% { top: 260px; }
+    }
+
+    .game-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 12px;
+      font-weight: 600;
+      color: var(--text-soft);
+    }
+
+    .btn {
+      background: var(--accent-pink);
+      color: white;
+      border: none;
+      padding: 12px 26px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(242, 139, 130, 0.3);
+      transition: all 0.2s ease;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background: var(--button-hover);
+      transform: translateY(-2px);
+    }
+
+    /* Interactive Hug/Forgive buttons */
+    .choice-section {
+      text-align: center;
+      padding: 24px;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    #forgiveBtn {
+      background: #77b895;
+    }
+
+    #forgiveBtn:hover {
+      background: #62a380;
+    }
+
+    #needTimeBtn {
+      background: #d4b29c;
+    }
+
+    #forgive-message {
+      margin-top: 18px;
+      font-weight: 600;
+      color: #5c7e68;
+      display: none;
+      font-size: 1.15rem;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Background Elements -->
+  <div class="bubble" style="left: 12%; animation-duration: 9s;">🌸</div>
+  <div class="bubble" style="left: 28%; animation-duration: 7s; animation-delay: 2s;">🤍</div>
+  <div class="bubble" style="left: 65%; animation-duration: 10s; animation-delay: 1s;">✨</div>
+  <div class="bubble" style="left: 82%; animation-duration: 8s; animation-delay: 3s;">🧸</div>
+
+  <div class="container">
+    
+    <header>
+      <h1>A Little Peace Offering ☕</h1>
+      <p>Because you mean the world to me, Bhoomi.</p>
+    </header>
+
+    <!-- Apology Letter Section -->
+    <section class="card letter">
+      <h2>Dear Bhoomi, ✉️</h2>
+      <p>
+        I am so sorry, Bhoomi. I know I mess up way too often, and believe me, I never ever want to hurt you. Sometimes things just go wrong, and I don't even know how it happens, but seeing you upset breaks my heart completely.
+      </p>
+      
+      <p>
+        In just this past month, you have become someone so incredibly special to me. You are my <strong>safe space</strong>—the one person I can come to, open up to, and find real motivation to do something meaningful in life. My days feel completely incomplete without talking to you; I constantly find myself checking my phone just to see if your message has arrived. You matter to me more than anything else.
+      </p>
+
+      <div class="highlight-box">
+        <strong>About today:</strong> I am genuinely sorry for the way I handled the Shrestha situation, for raising my voice, for not calling, and for not truly listening to what you had to say. I know how much it hurts when you take the time to share advice or talk sense, and the other person just ignores it.
+      </div>
+
+      <p>
+        I promise I am going to work on this. I will make sure I never raise my voice at you again—not even a bit. I will stop the unnecessary ragebaiting, listen to you with complete focus, and treasure the space you give me.
+      </p>
+
+      <p>
+        I am sorry from the absolute bottom of my heart, Bhoomi. Please forgive me.
+      </p>
+
+      <div class="letter-signature">
+        Yours always,<br>
+        <strong>Raunak</strong> 🤍
+      </div>
+    </section>
+
+    <!-- Mini Cozy Game -->
+    <section class="card game-box">
+      <h2>Catch Raunak's Apology Hugs 🧸</h2>
+      <p>Whenever I mess up, I wish I could make you smile. Tap the falling items to collect 5 warm hugs!</p>
+      
+      <div id="game-canvas-container">
+        <div id="start-overlay" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(253, 246, 240, 0.88);">
+          <button class="btn" id="start-game-btn">Tap to Start Collecting Hugs</button>
+        </div>
+      </div>
+
+      <div class="game-stats">
+        <span>Hugs Collected: <span id="score">0</span>/5</span>
+        <span id="game-status">Ready when you are!</span>
+      </div>
+    </section>
+
+    <!-- Interactive Forgiveness Box -->
+    <section class="card choice-section">
+      <h2>Can We Share a Hug, Bhoomi? 🫂</h2>
+      <p>Take all the time you need, no rush at all.</p>
+      
+      <div class="btn-group">
+        <button class="btn" id="forgiveBtn">I forgive you, Raunak 🤍</button>
+        <button class="btn" id="needTimeBtn">I still need a little time ☕</button>
+      </div>
+      <div id="forgive-message">Thank you for being so kind, Bhoomi. I promise to never take you for granted. 🌸</div>
+    </section>
+
+  </div>
+
+  <script>
+    // Game Logic
+    const container = document.getElementById('game-canvas-container');
+    const startBtn = document.getElementById('start-game-btn');
+    const scoreEl = document.getElementById('score');
+    const statusEl = document.getElementById('game-status');
+    const overlay = document.getElementById('start-overlay');
+    
+    let score = 0;
+    let gameInterval;
+    const icons = ['🫂', '🧸', '🍪', '✨', '🤍', '🌸'];
+
+    startBtn.addEventListener('click', () => {
+      overlay.style.display = 'none';
+      score = 0;
+      scoreEl.textContent = score;
+      statusEl.textContent = 'Tap the icons!';
+      spawnItems();
+    });
+
+    function spawnItems() {
+      gameInterval = setInterval(() => {
+        if (score >= 5) {
+          clearInterval(gameInterval);
+          statusEl.textContent = '🎉 All caught! Sending you the warmest hugs.';
+          return;
+        }
+
+        const item = document.createElement('div');
+        item.classList.add('falling-heart');
+        item.textContent = icons[Math.floor(Math.random() * icons.length)];
+        
+        const maxX = container.clientWidth - 40;
+        item.style.left = Math.floor(Math.random() * maxX) + 'px';
+        item.style.animationDuration = (Math.random() * 1.5 + 2.2) + 's';
+
+        item.addEventListener('pointerdown', () => {
+          score++;
+          scoreEl.textContent = score;
+          item.remove();
+
+          if (score >= 5) {
+            clearInterval(gameInterval);
+            statusEl.textContent = '🎉 All 5 caught! Warm hugs delivered.';
+          }
+        });
+
+        item.addEventListener('animationend', () => {
+          item.remove();
+        });
+
+        container.appendChild(item);
+      }, 750);
+    }
+
+    // Button actions
+    const needTimeBtn = document.getElementById('needTimeBtn');
+    const forgiveBtn = document.getElementById('forgiveBtn');
+    const forgiveMessage = document.getElementById('forgive-message');
+
+    forgiveBtn.addEventListener('click', () => {
+      forgiveMessage.style.display = 'block';
+      forgiveBtn.style.display = 'none';
+      needTimeBtn.style.display = 'none';
+    });
+
+    needTimeBtn.addEventListener('click', () => {
+      alert("Take all the time you need, Bhoomi. I'll be right here waiting patiently! 🤍");
+    });
+  </script>
+</body>
+</html>
