@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Cozy Message For You 💌</title>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #fdf6f0;
+      --card-bg: #fffaf5;
+      --accent-warm: #f6c8b2;
+      --accent-pink: #f28b82;
+      --text-main: #5c4d44;
+      --text-soft: #8a796e;
+      --button-hover: #e87b72;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(180deg, #fdf6f0 0%, #fbebe0 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Floating background elements */
+    .bubble {
+      position: fixed;
+      font-size: 20px;
+      pointer-events: none;
+      animation: floatUp 8s infinite linear;
+      opacity: 0.5;
+      z-index: 0;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(105vh) scale(0.8);
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1.1);
+        opacity: 0;
+      }
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    header h1 {
+      font-family: 'Comfortaa', cursive;
+      font-size: 2.2rem;
+      color: #b35948;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: var(--text-soft);
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 10px 25px rgba(184, 150, 137, 0.12);
+      border: 1px solid rgba(246, 200, 178, 0.4);
+      transition: transform 0.2s ease;
+    }
+
+    .card h2 {
+      font-family: 'Comfortaa', cursive;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #9c483a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Letter section */
+    .letter p {
+      line-height: 1.8;
+      font-size: 1.05rem;
+      margin-bottom: 14px;
+      white-space: pre-line;
+    }
+
+    .letter-signature {
+      text-align: right;
+      font-weight: 600;
+      margin-top: 20px;
+      color: #9c483a;
+    }
+
+    /* Mini-game Section */
+    .game-box {
+      text-align: center;
+    }
+
+    #game-canvas-container {
+      position: relative;
+      width: 100%;
+      height: 240px;
+      background: #faefe6;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-top: 15px;
+      border: 2px dashed #f6c8b2;
+      touch-action: none;
+    }
+
+    .falling-heart {
+      position: absolute;
+      font-size: 24px;
+      user-select: none;
+      cursor: pointer;
+      animation: fallDown linear forwards;
+    }
+
+    @keyframes fallDown {
+      0% { top: -30px; }
+      100% { top: 250px; }
+    }
+
+    .game-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      font-weight: 600;
+      color: var(--text-soft);
+    }
+
+    .btn {
+      background: var(--accent-pink);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(242, 139, 130, 0.3);
+      transition: all 0.2s ease;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background: var(--button-hover);
+      transform: translateY(-2px);
+    }
+
+    /* Interactive Hug/Forgive buttons */
+    .choice-section {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 15px;
+      position: relative;
+      min-height: 50px;
+    }
+
+    #forgiveBtn {
+      background: #77b895;
+    }
+
+    #forgiveBtn:hover {
+      background: #62a380;
+    }
+
+    #needTimeBtn {
+      background: #d4b29c;
+      position: relative;
+      transition: 0.15s ease;
+    }
+
+    #forgive-message {
+      margin-top: 15px;
+      font-weight: 600;
+      color: #5c7e68;
+      display: none;
+      font-size: 1.1rem;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Background Bubbles -->
+  <div class="bubble" style="left: 10%; animation-duration: 9s;">🌸</div>
+  <div class="bubble" style="left: 30%; animation-duration: 7s; animation-delay: 2s;">🤍</div>
+  <div class="bubble" style="left: 65%; animation-duration: 10s; animation-delay: 1s;">✨</div>
+  <div class="bubble" style="left: 85%; animation-duration: 8s; animation-delay: 3s;">🧸</div>
+
+  <div class="container">
+    
+    <header>
+      <h1>A Little Peace Offering ☕</h1>
+      <p>Because you mean the world to me, and I messed up.</p>
+    </header>
+
+    <!-- Apology Letter Section -->
+    <section class="card letter">
+      <h2>Dear [Their Name], ✉️</h2>
+      <p>
+        I’m writing this because words sometimes get tangled in the moment, but my feelings are completely clear: <strong>I am truly, deeply sorry.</strong>
+      </p>
+      <p>
+        I know I make mistakes, and I know I upset you. It breaks my heart to know that I caused you frustration, sadness, or pain. You are one of the most special people in my life, and keeping you happy and smiling is something I care about endlessly.
+      </p>
+      <p>
+        I don't expect everything to be fixed in a single second, but I want you to know I am genuinely listening, learning, and trying to be better for you every single day.
+      </p>
+      <div class="letter-signature">
+        Always yours,<br>
+        [Your Name]
+      </div>
+    </section>
+
+    <!-- Mini Cozy Game -->
+    <section class="card game-box">
+      <h2>Catch Some Hugs 🧸</h2>
+      <p>Whenever I mess up, I wish I could just shower you with warmth. Catch 5 warm hugs!</p>
+      
+      <div id="game-canvas-container">
+        <div id="start-overlay" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(253, 246, 240, 0.85);">
+          <button class="btn" id="start-game-btn">Tap to Start Collecting</button>
+        </div>
+      </div>
+
+      <div class="game-stats">
+        <span>Hugs Collected: <span id="score">0</span>/5</span>
+        <span id="game-status">Ready when you are!</span>
+      </div>
+    </section>
+
+    <!-- Interactive Forgiveness Box -->
+    <section class="card choice-section">
+      <h2>Can We Share a Hug? 🫂</h2>
+      <p>Take your time, there is no pressure at all.</p>
+      
+      <div class="btn-group">
+        <button class="btn" id="forgiveBtn">I forgive you 🤍</button>
+        <button class="btn" id="needTimeBtn">I still need a bit of time ☕</button>
+      </div>
+      <div id="forgive-message">Thank you for having such a kind heart. I promise to do better. 🌸</div>
+    </section>
+
+  </div>
+
+  <script>
+    // --- MINI GAME LOGIC ---
+    const container = document.getElementById('game-canvas-container');
+    const startBtn = document.getElementById('start-game-btn');
+    const scoreEl = document.getElementById('score');
+    const statusEl = document.getElementById('game-status');
+    const overlay = document.getElementById('start-overlay');
+    
+    let score = 0;
+    let gameInterval;
+    const icons = ['🫂', '🧸', '🍪', '✨', '🤍', '🌸'];
+
+    startBtn.addEventListener('click', () => {
+      overlay.style.display = 'none';
+      score = 0;
+      scoreEl.textContent = score;
+      statusEl.textContent = 'Catch them quick!';
+      spawnItems();
+    });
+
+    function spawnItems() {
+      gameInterval = setInterval(() => {
+        if (score >= 5) {
+          clearInterval(gameInterval);
+          statusEl.textContent = '🎉 All caught! Sending you big warm hugs.';
+          return;
+        }
+
+        const item = document.createElement('div');
+        item.classList.add('falling-heart');
+        item.textContent = icons[Math.floor(Math.random() * icons.length)];
+        
+        // Random horizontal position
+        const maxX = container.clientWidth - 40;
+        item.style.left = Math.floor(Math.random() * maxX) + 'px';
+        item.style.animationDuration = (Math.random() * 1.5 + 2) + 's';
+
+        // Click / Touch interaction
+        item.addEventListener('pointerdown', () => {
+          score++;
+          scoreEl.textContent = score;
+          item.remove();
+
+          if (score >= 5) {
+            clearInterval(gameInterval);
+            statusEl.textContent = '🎉 You caught them all! Warm hugs delivered.';
+          }
+        });
+
+        // Auto remove when animation finishes
+        item.addEventListener('animationend', () => {
+          item.remove();
+        });
+
+        container.appendChild(item);
+      }, 700);
+    }
+
+    // --- PLAYFUL "NEED TIME" BUTTON DODGE (Optional fun touch) ---
+    const needTimeBtn = document.getElementById('needTimeBtn');
+    const forgiveBtn = document.getElementById('forgiveBtn');
+    const forgiveMessage = document.getElementById('forgive-message');
+
+    // Click forgive action
+    forgiveBtn.addEventListener('click', () => {
+      forgiveMessage.style.display = 'block';
+      forgiveBtn.style.display = 'none';
+      needTimeBtn.style.display = 'none';
+    });
+
+    // Gentle tease: moves slightly when hovered/tapped, but still clickable
+    needTimeBtn.addEventListener('click', () => {
+      alert("I completely understand. Take all the time you need. I'll always be here waiting patiently! 🤍");
+    });
+  </script>
+</body>
+</html>
